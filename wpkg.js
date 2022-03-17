@@ -688,7 +688,9 @@ try {
 function main() {
 	// Do not open pop-up window while initializing.
 	setQuiet(true);
-
+	
+	var WshShell = new ActiveXObject("WScript.Shell");
+	WshShell.RegWrite("HKLM\\Software\\WPKGRestartScheduled", 0, "REG_DWORD");
 	// Initialize WPKG internals.
 	initialize();
 
@@ -10376,9 +10378,10 @@ function reboot() {
 			}
 			// make sure files are written
 			cleanup();
+			WshShell.RegWrite("HKLM\\Software\\WPKGRestartScheduled", 1, "REG_DWORD");
 			for (; !e.atEnd(); e.moveNext()) {
 				var x = e.item();
-				x.win32Shutdown(6);
+				x.Win32ShutdownTracker(60,"WPKG Restart",0,2);
 			}
 			exit(3010);
 			break;
