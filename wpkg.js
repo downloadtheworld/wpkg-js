@@ -2765,7 +2765,9 @@ function getHostGroups() {
 				hostGroups.push(group.Name);
 			}
 		} catch (e) {
-			dinfo("Message: Unable to fetch computer membership groups. Probably not a domain member.");
+			error("Unable to fetch computer membership groups. Exiting.");
+			dinfo("Message: Unable to fetch computer membership groups. Exiting.");
+			exit(200); // Exit code 200 - I don't know what error codes are used elsewhere.
 		}
 	}
 	return hostGroups;
